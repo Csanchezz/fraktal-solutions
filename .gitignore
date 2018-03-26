@@ -1,2 +1,5 @@
 #dependences
-*/node-modules/*
+api-users/node-modules/*
+express-react/node-modules/*
+next-app/node-modules/*
+react-login/node-modules/*
