@@ -1,0 +1,16 @@
+{
+  "name": "next-try",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "next"
+  },
+  "author": "csanchezz",
+  "license": "MIT",
+  "dependencies": {
+    "next": "^5.1.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  }
+}
