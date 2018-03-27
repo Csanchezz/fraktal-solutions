@@ -1,39 +1,62 @@
 const graphql = require('graphql');
+const _ = require('lodash');
 const {
     GraphQLObjectType,
     GraphQLString,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLSchema
 } = graphql;
 
 const users = [
-    {id: '23', firstName:'Bill', age:20},
-    {id: '47', firstName:'Jason', age:22},
-    {id: '45', firstName:'Amanda', age:19},
-    {id: '101', firstName:'Nail', age:15},
-    {id: '911', firstName:'Filly', age:25}
-    
-]
 
+    { id: '23', firstName: 'Firulais', age: '304', message: 'Yoooh huuuu'},
+    { id: '101', firstName: 'Malefica', age: '1024', message: 'A True Love'},
+    { id: '86', firstName: 'Harmony', age: '21', message: 'Music is my life'},
+    { id: '13', firstName: 'Zeus', age: '1332', message: 'Party in the valhala'},
+    { id: '35', firstName: 'HolySpirit', age: '3333', message: 'Full you soul'},
+    { id: '58', firstName: 'AlanTuring', age: '35', message: 'Creator of Computers' }
+
+];
 
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: {
-        id: { type:GraphQLString},
-        firstName: { type:GraphQLString},
-        age:{ type:GraphQLInt}
+        id: { type: GraphQLString },
+        firstName: { type: GraphQLString },
+        age: { type: GraphQLInt }
     }
-    
-}); 
+
+});
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        user:{
+        user: {
             type: UserType,
-            args:{id:{type: GraphQLString}},
-            resolve(parenValue, args){
-                return _.findLast(users, {id:args.id});
+            args: { id: { type: GraphQLString } },
+            resolve(parenValue, args) {
+                return _.find(users, { id: args.id });
             }
         }
     }
+});
+
+const AuthQuery = new GraphQLObjectType({
+    name: 'AuthQueryType',
+    fields: {
+        user: {
+            type: UserType,
+            args: { id: { type: GraphQLString }, firstName: { type: GraphQLString } },
+            resolve(parenValue, args) {
+                return _.find(users, { id: args.id, firstName: args.firstName });
+            }
+        }
+    }
+});
+
+
+module.exports = new GraphQLSchema({
+    query: RootQuery,
+    authquery: AuthQuery
+    
 });
