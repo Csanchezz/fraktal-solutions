@@ -15,7 +15,7 @@ module.exports = function(app){
     app.get('/user/:username', function(req, res){
         Todos.find({username: req.params.username },function(err, todos){
             if(err) throw err;
-            res.send(todos);
+            res.json(todos);
         });
     });
 
