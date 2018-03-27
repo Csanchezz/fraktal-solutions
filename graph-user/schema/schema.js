@@ -5,6 +5,15 @@ const {
     GraphQLInt
 } = graphql;
 
+const users = [
+    {id: '23', firstName:'Bill', age:20},
+    {id: '47', firstName:'Jason', age:22},
+    {id: '45', firstName:'Amanda', age:19},
+    {id: '101', firstName:'Nail', age:15},
+    {id: '911', firstName:'Filly', age:25}
+    
+]
+
 
 const UserType = new GraphQLObjectType({
     name: 'User',
@@ -23,7 +32,7 @@ const RootQuery = new GraphQLObjectType({
             type: UserType,
             args:{id:{type: GraphQLString}},
             resolve(parenValue, args){
-            
+                return _.findLast(users, {id:args.id});
             }
         }
     }
