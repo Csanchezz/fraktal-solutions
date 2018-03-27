@@ -1,31 +1,48 @@
 const graphql = require('graphql');
-const _ = require('lodash');
+const axios = require('axios');
+//const _ = require('lodash');
 const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLInt,
-    GraphQLSchema
+    GraphQLSchema,
+    GraphQLList,
+    GraphQLNonNull  
 } = graphql;
 
-const users = [
+const SchoolType = new GraphQLObjectType({
+    name: 'School',
+    fields: () => ({
+        id: { type: GraphQLString },
+        schoolName: { type: GraphQLString },
+        address: { type: GraphQLString },
+        description: { type: GraphQLString },
+        users:{
+            type: new GraphQLList(UserType),
+            resolve(parentValue, args){
+                return axios.get(`http://localhost:3000/schools/${parentValue.id}/users`)
+                    .then(res => res.data);
+            }
+        }
 
-    { id: '23', firstName: 'Firulais', age: '304', message: 'Yoooh huuuu'},
-    { id: '101', firstName: 'Malefica', age: '1024', message: 'A True Love'},
-    { id: '86', firstName: 'Harmony', age: '21', message: 'Music is my life'},
-    { id: '13', firstName: 'Zeus', age: '1332', message: 'Party in the valhala'},
-    { id: '35', firstName: 'HolySpirit', age: '3333', message: 'Full you soul'},
-    { id: '58', firstName: 'AlanTuring', age: '35', message: 'Creator of Computers' }
-
-];
+    })
+});
 
 const UserType = new GraphQLObjectType({
     name: 'User',
-    fields: {
+    fields: () => ({
         id: { type: GraphQLString },
         firstName: { type: GraphQLString },
-        age: { type: GraphQLInt }
-    }
-
+        age: { type: GraphQLInt },
+        message: { type: GraphQLString },
+        school: {
+            type: SchoolType,
+            resolve(parentValue, args) {
+                return axios.get(`http://localhost:3000/schools/${parentValue.schoolId}`)
+                    .then(res => res.data);
+            }
+        }
+    })
 });
 
 const RootQuery = new GraphQLObjectType({
@@ -34,29 +51,81 @@ const RootQuery = new GraphQLObjectType({
         user: {
             type: UserType,
             args: { id: { type: GraphQLString } },
-            resolve(parenValue, args) {
-                return _.find(users, { id: args.id });
+            resolve(parentValue, args) {
+                return axios.get(`http://localhost:3000/users/${args.id}`)
+                    .then(resp => resp.data);
+
+            }
+        },
+        school: {
+            type: SchoolType,
+            args: { id: { type: GraphQLString } },
+            resolve(parentValue, args) {
+                return axios.get(`http://localhost:3000/schools/${args.id}`)
+                    .then(resp => resp.data)
             }
         }
     }
 });
 
-const AuthQuery = new GraphQLObjectType({
-    name: 'AuthQueryType',
+const mutation = new GraphQLObjectType({
+    name:'Mutation',
     fields: {
-        user: {
-            type: UserType,
-            args: { id: { type: GraphQLString }, firstName: { type: GraphQLString } },
-            resolve(parenValue, args) {
-                return _.find(users, { id: args.id, firstName: args.firstName });
+        addUser:{
+            type:UserType,
+            args:{
+                firstName: {type: new GraphQLNonNull(GraphQLString)},
+                age: {type: new GraphQLNonNull(GraphQLInt)},
+                message: {type: new GraphQLNonNull(GraphQLString)},                
+                schoolId: {type: GraphQLString}
+            },
+            resolve(parentValue, { firstName, age, message}){
+                return axios.post('http://localhost:3000/users', {firstName, age, message})
+                    .then(res => res.data);
             }
-        }
+        },
+        deleteUser:{
+            type:UserType,
+            args:{ id: {type:new GraphQLNonNull(GraphQLString)},
+            },
+            resolve(parentValue, {id} ){
+                return axios.delete(`http://localhost:3000/users/${id}`)
+                    .then(res => res.data);
+            }
+        },
+        editUser:{
+            type:UserType,
+            args:{
+                id:{type: new GraphQLNonNull(GraphQLString)},
+                firstName: {type: GraphQLString},
+                age: {type: GraphQLInt},
+                message: {type: GraphQLString},                
+                schoolId: {type: GraphQLString}
+            },
+            resolve(parentValue, { id, firstName, age, message, schoolId}){
+                return axios.patch(`http://localhost:3000/users/${id}`, args)
+                    .then(res => res.data);
+            }
+        },
+        changeUser:{
+            type:UserType,
+            args:{
+                id:{type: new GraphQLNonNull(GraphQLString)},
+                firstName: {type: GraphQLString},
+                age: {type: GraphQLInt},
+                message: {type: GraphQLString},                
+                schoolId: {type: GraphQLString}
+            },
+            resolve(parentValue, { id, firstName, age, message, schoolId}){
+                return axios.patch(`http://localhost:3000/users/${id}`, args)
+                    .then(res => res.data);
+            }
+        },
     }
-});
-
+})
 
 module.exports = new GraphQLSchema({
     query: RootQuery,
-    authquery: AuthQuery
-    
-});
+    mutation
+
+}); 

@@ -1,0 +1,90 @@
+{
+  "users": [
+    {
+      "id": "23",
+      "firstName": "Firulais",
+      "age": 304,
+      "message": "Yoooh huuuu",
+      "schoolId": "264"
+    },
+    {
+      "id": "101",
+      "firstName": "Malefica",
+      "age": 1024,
+      "message": "A True Love",
+      "schoolId": "796"
+    },
+    {
+      "id": "86",
+      "firstName": "Harmony",
+      "age": 21,
+      "message": "Music is my life",
+      "schoolId": "965"
+    },
+    {
+      "id": "13",
+      "firstName": "Zeus",
+      "age": 1332,
+      "message": "Party in the valhala",
+      "schoolId": "764"
+    },
+    {
+      "id": "35",
+      "firstName": "HolySpirit",
+      "age": 3333,
+      "message": "Full you soul",
+      "schoolId": "264"
+    },
+    {
+      "id": "58",
+      "firstName": "AlanTuring",
+      "age": 35,
+      "message": "Creator of Computers",
+      "schoolId": "965"
+    },
+    {
+      "firstName": "Jasmine",
+      "age": 22,
+      "message": "Eu vou a ficar com voce",
+      "id": "IoCmVND"
+    }
+  ],
+  "schools": [
+    {
+      "id": "965",
+      "schoolName": "Elementary from Ohio",
+      "address": "Corner of Ohio",
+      "description": "description Example for all the schools"
+    },
+    {
+      "id": "546",
+      "schoolName": "Elementary from Wisconsin",
+      "address": "Edge of Wisconsin",
+      "description": "A description Example for all the schools"
+    },
+    {
+      "id": "589",
+      "schoolName": "Elementary from Alabama",
+      "address": "Near of _Alaska_",
+      "description": "Music is description Example for all the schools"
+    },
+    {
+      "id": "264",
+      "schoolName": "Elementary from Oklahoma",
+      "address": "With Miles",
+      "description": "Party description Example for all the schools"
+    },
+    {
+      "id": "796",
+      "schoolName": "Elementary from Louisiana",
+      "address": "Well, Louisiana",
+      "description": "Full description Example for all the schools"
+    },
+    {
+      "id": "764",
+      "schoolName": "Elementary from Kansas",
+      "address": "ohhhhh is Kansas XD",
+      "description": "Creator description Example for all the schools"
+    }
+  ]
+}
